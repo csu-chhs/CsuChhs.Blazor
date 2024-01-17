@@ -1,0 +1,64 @@
+﻿@inherits InputTextArea
+@inject IJSRuntime JSRuntime
+
+<style>
+    .ck-editor__editable[role="textbox"] {
+        min-height: 200px;
+    }
+
+</style>
+
+<textarea @attributes="AdditionalAttributes"
+          id="@Id"
+          class="@CssClass"
+          value="@CurrentValue"></textarea>
+
+@code {
+    private string? _id;
+
+    [Parameter]
+    public string Id
+    {
+        get => _id ?? $"CKEditor_{uid}";
+        set => _id = value;
+    }
+
+    readonly string uid = Guid.NewGuid().ToString()
+        .ToLower().Replace("-", "");
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JSRuntime.InvokeVoidAsync("CKEditorInterop.init", Id, DotNetObjectReference.Create(this));
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    [JSInvokable]
+    public Task EditorDataChanged(string data)
+    {
+        CurrentValue = data;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Pushes (ammends) content directly to
+    /// the Editor.  The CKEditor component does not
+    /// support true two-way binding.  If the bind value
+    /// is updated, it will update the value, but will
+    /// not update inside the editor.   
+    /// </summary>
+    /// <param name="content"></param>
+    public void Push(string content)
+    {
+        CurrentValue += content;
+        JSRuntime.InvokeVoidAsync("CKEditorInterop.addTo", Id, CurrentValue);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        JSRuntime.InvokeVoidAsync("CKEditorInterop.destroy", Id);
+        base.Dispose(disposing);
+    }
+}

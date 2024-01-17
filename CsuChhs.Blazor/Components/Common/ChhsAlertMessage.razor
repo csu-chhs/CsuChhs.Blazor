@@ -1,0 +1,66 @@
+﻿@inject AlertMessageService AlertMessageService
+@implements IDisposable
+
+@if(_isVisible)
+{
+    <div class="alert @_alertCssClass" role="alert">
+        @_message
+    </div>
+}
+
+
+@code {
+    private string? _message;
+    private string? _alertCssClass;
+    private bool _isVisible;
+
+    protected override void OnInitialized()
+    {
+        AlertMessageService.OnShow += ShowAlertMessage;
+        AlertMessageService.OnHide += HideAlertMessage;
+    }
+
+    private void HideAlertMessage()
+    {
+        _isVisible = false;
+        InvokeAsync(() => this.StateHasChanged());
+    }
+
+    private void ShowAlertMessage(string message,
+        AlertMessageLevels.AlertMessageLevel level)
+    {
+        BuildAlertSettings(message, level);
+        _isVisible = true;
+        InvokeAsync(() => this.StateHasChanged());
+    }
+
+    private void BuildAlertSettings(string message, 
+        AlertMessageLevels.AlertMessageLevel level)
+    {
+        _message = message;
+        switch (level)
+        {
+            case AlertMessageLevels.AlertMessageLevel.Error:
+                _alertCssClass = "alert-danger";
+                break;
+                
+            case AlertMessageLevels.AlertMessageLevel.Info:
+                _alertCssClass = "alert-info";
+                break;
+
+            case AlertMessageLevels.AlertMessageLevel.Success:
+                _alertCssClass = "alert-success";
+                break;
+
+            case AlertMessageLevels.AlertMessageLevel.Warning:
+                _alertCssClass = "alert-warning";
+                break;
+        }
+    }
+
+    public void Dispose()
+    {
+        AlertMessageService.OnShow -= ShowAlertMessage;
+        AlertMessageService.OnHide -= HideAlertMessage;
+    }
+}

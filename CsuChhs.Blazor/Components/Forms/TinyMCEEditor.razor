@@ -1,0 +1,90 @@
+﻿@inject NavigationManager _navigationManager
+@using TinyMCE.Blazor
+
+<Editor @bind-Value="Body" ApiKey='@apiKey'
+        CloudChannel="5"
+        Conf="@editorConf" Field="() => Body"
+        JsConfSrc="chhsTinyMCE" Id="@Id"/>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string ImageUploadUrl { get; set; }
+
+    [Parameter]
+    public int Height { get; set; } = 400;
+
+    [Parameter]
+    public bool ShowImage { get; set; } = true;
+
+    [Parameter]
+    public bool ShowEmbed { get; set; } = false;
+
+    private string Body
+    {
+        get
+        {
+            return Value;
+        }
+        set
+        {
+            Value = value;
+            HandleInput(Value);
+        }
+    }
+
+    private static string apiKey = "45nzli691gdxpi0h7po02v7pewf1enfr1at7cd4fzdzij6ud";
+
+    private Dictionary<string, object> editorConf = new Dictionary<string, object>{
+       { "menubar", true },
+    };
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (!string.IsNullOrWhiteSpace(ImageUploadUrl))
+            {
+                editorConf.Add("images_upload_url", $"{_navigationManager.BaseUri}{ImageUploadUrl}");
+            }
+            string plugins = "link code lists";
+            string toolbar = "undo redo | styleselect | forecolor | bold italic | numlist bullist | alignleft aligncenter alignright alignjustify | outdent indent | link code | ";
+            if (ShowImage)
+            {
+                plugins += " image";
+                toolbar += " image";
+            }
+            if (ShowEmbed)
+            {
+                plugins += " media";
+                toolbar += " media";
+            }
+            editorConf.Add("relative_urls", false);
+            editorConf.Add("remove_script_host", false);
+            editorConf.Add("convert_urls", true);
+            editorConf.Add("height", Height);
+            editorConf.Add("plugins", plugins);
+            editorConf.Add("toolbar", toolbar);
+        }
+    }
+
+    private void HandleInput(string value)
+    {
+        // This method can't be async cause it's called from a setter.
+        // We can call the async version without awaiting here.
+        InvokeInput(value);
+    }
+
+    private async Task InvokeInput(string value)
+    {
+        await ValueChanged.InvokeAsync(value);
+    }
+}

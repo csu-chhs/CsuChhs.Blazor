@@ -1,0 +1,25 @@
+﻿@inject NavigationManager NavigationManager
+
+<CascadingValue Value=this>
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    public void ProcessException(Exception ex)
+    {
+        if(ex is ObjectNotFoundException)
+        {
+            NavigationManager.NavigateTo("error/notfound");
+            return;
+        }
+
+        // All others ultimately go to generic error
+        NavigationManager.NavigateTo("error/fatal");
+        return;
+    }
+}

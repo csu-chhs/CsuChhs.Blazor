@@ -1,0 +1,42 @@
+﻿@inject NavigationManager Navigation
+
+@if (_unAuthorized)
+{
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Permission Denied</h4>
+        <p class="mb-0">
+            You do not have permission to access this page
+            or application. If you believe this an error,
+            please reach out to the College Help Desk for
+            assistance.
+        </p>
+    </div>
+}
+
+@code {
+
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private bool _unAuthorized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask;
+
+        if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
+        {
+            var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                Navigation.NavigateTo("auth/login", true);
+            else
+                Navigation.NavigateTo($"auth/login?returnUrl={returnUrl}", true);
+        }
+        else
+        {
+            _unAuthorized = true;
+        }
+    }
+
+}

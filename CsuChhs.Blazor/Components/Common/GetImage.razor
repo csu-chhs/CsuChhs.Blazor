@@ -1,0 +1,31 @@
+﻿@inject NavigationManager BlazorNavigationManager
+
+<img src="@imgLink" height="@Height" width="@Width" class="@ClassName"/>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public int? Height { get; set; }
+
+    [Parameter]
+    public int? Width { get; set; }
+
+    [Parameter]
+    public string ClassName { get; set; }
+
+    [Parameter]
+    public string ImageServicePath { get; set; }
+
+    string imgLink = "";
+
+    protected override void OnParametersSet()
+    {
+        string baseUrl = BlazorNavigationManager.BaseUri;
+        imgLink = $"{baseUrl}{ImageServicePath}{Id}?r=" + DateTime.Now.ToLongTimeString();
+        base.OnParametersSet();
+    }
+
+}
