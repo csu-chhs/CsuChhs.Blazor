@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>CHHS Application Development Team</Authors>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageProjectUrl>https://github.com/csu-chhs/CsuChhs.Blazor</PackageProjectUrl>
     <Company>College of Health and Human Sciences</Company>
     <PackageId>CsuChhs.Blazor</PackageId>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CsuChhs.WebComponents" Version="1.0.3" />
+		<PackageReference Include="CsuChhs.WebComponents" Version="1.0.*" />
 		<PackageReference Include="Humanizer.Core" Version="2.14.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*" />
