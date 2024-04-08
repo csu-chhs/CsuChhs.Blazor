@@ -1,0 +1,19 @@
+﻿<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Error</h5>
+    @if (!string.IsNullOrEmpty(Message))
+    {
+        <p>@Message</p>
+    }
+    else
+    {
+        <p>
+            An error has occurred.  Please try again.  If this continues
+            to occur please reach out to a member of the Application Development team.
+        </p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? Message { get; set; }
+}
