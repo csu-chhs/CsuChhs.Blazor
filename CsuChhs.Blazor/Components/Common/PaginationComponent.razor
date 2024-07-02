@@ -1,4 +1,5 @@
-﻿@if (PageCount > 1)
+﻿@using Humanizer
+@if (PageCount > 1)
 {
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -7,18 +8,52 @@
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
+            
             @{
+                if (_lowerLimit > 1)
+                {
+                    <li class="page-item @(1 == ActivePage ? "active" : "")">
+                        <a class="page-link" href="#" aria-label="page 1" @onclick:preventDefault @onclick="() => GoToPageClick(1)">
+                            1
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link disabled">
+                            ...
+                        </a>
+                    
+                    </li>
+                }
                 var x = 0;
 
                 while (x < PageCount)
                 {
                     x++;
                     int pageIndex = x;
-                    <li class="page-item @(x == ActivePage ? "active" : "")">
-                        <a class="page-link" href="#" @onclick:preventDefault @onclick="() => GoToPageClick(pageIndex)">@x</a>
+
+                    if (pageIndex >= _lowerLimit && pageIndex <= _pageUpperLimit)
+                    {
+                        <li class="page-item @(x == ActivePage ? "active" : "")">
+                            <a class="page-link" href="#" @onclick:preventDefault @onclick="() => GoToPageClick(pageIndex)">@x</a>
+                        </li>
+                    }
+                }
+
+                if (PageCount > _pageUpperLimit)
+                {
+                    <li class="page-item">
+                        <a class="page-link disabled">
+                            ...
+                        </a>
+                    </li>
+                    <li class="page-item @(PageCount == ActivePage ? "active" : "")">
+                        <a class="page-link" href="#" @onclick:preventDefault @onclick="() => GoToPageClick(PageCount)">
+                            @PageCount
+                        </a>
                     </li>
                 }
             }
+            
             <li class="page-item">
                 <a class="page-link" href="#" aria-label="Next" @onclick:preventDefault @onclick="() => GoToPageClick(_nextPage)">
                     <span aria-hidden="true">&raquo;</span>
@@ -40,7 +75,10 @@
 
     private int _previousPage = 1;
     private int _nextPage = 1;
-
+    private int _pageUpperLimit = 10;
+    private int _lowerLimit = 1;
+    
+    
     protected override Task OnParametersSetAsync()
     {
         if (ActivePage > 1)
@@ -53,6 +91,16 @@
             _nextPage = ActivePage + 1;
         }
 
+        _pageUpperLimit = ActivePage + 5;
+        if (ActivePage >= 6)
+        {
+            _lowerLimit = ActivePage - 5;
+        }
+        else
+        {
+            _lowerLimit = 1;
+        }
+        
         return base.OnParametersSetAsync();
     }
 
