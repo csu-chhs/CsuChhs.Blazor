@@ -11,7 +11,7 @@ namespace CsuChhs.Blazor.Components.Forms
 {
     // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
     [HtmlTargetElement("tag-name")]
-    public class InputSelectEnum : TagHelper
+    public class InputSelectEnumOptionGroup : TagHelper
     {
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -23,16 +23,28 @@ namespace CsuChhs.Blazor.Components.Forms
 
     // Inherit from InputBase so the hard work is already implemented 😊
     // Note that adding a constraint on TEnum (where T : Enum) doesn't work when used in the view, Razor raises an error at build time. Also, this would prevent using nullable types...
-    public sealed class InputSelectEnum<TEnum> : InputBase<TEnum>
+    public sealed class InputSelectEnumOptionGroup<TEnum> : InputBase<TEnum>
     {
         // Generate html when the component is rendered.
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            List<OptionGroup> optionGroups;
+            if (AdditionalAttributes.ContainsKey("optionGroups"))
+            {
+                optionGroups = (List<OptionGroup>)AdditionalAttributes["optionGroups"];
+            }
+            else
+            {
+                optionGroups = new List<OptionGroup>();
+            }
+
             builder.OpenElement(0, "select");
             builder.AddMultipleAttributes(1, AdditionalAttributes);
             builder.AddAttribute(2, "class", CssClass);
             builder.AddAttribute(3, "value", BindConverter.FormatValue(CurrentValueAsString));
-            builder.AddAttribute(4, "onchange", EventCallback.Factory.CreateBinder<string>(this, value => CurrentValueAsString = value, CurrentValueAsString, null));
+            builder.AddAttribute(4, "onchange",
+                EventCallback.Factory.CreateBinder<string>(this, value => CurrentValueAsString = value,
+                    CurrentValueAsString, null));
 
             // Add default null option
             builder.OpenElement(5, "option");
@@ -44,12 +56,32 @@ namespace CsuChhs.Blazor.Components.Forms
             var enumType = GetEnumType();
             int index = 0;
 
-            foreach (KeyValuePair<string, string> entry in _GetOrderedDict())
+            foreach (TEnum value in Enum.GetValues(enumType))
             {
+                OptionGroup? optionGroup = null;
+
+                if (optionGroups.Any())
+                {
+                    optionGroup = optionGroups
+                        .SingleOrDefault(o => o.OpenIndex == index
+                                              || o.CloseIndex == index);
+                }
+
+                if (optionGroup != null && optionGroup.OpenIndex == index)
+                {
+                    builder.OpenElement(5, "optgroup");
+                    builder.AddAttribute(5, "label", optionGroup.Label);
+                }
+
                 builder.OpenElement(5, "option");
-                builder.AddAttribute(6, "value", entry.Key.ToString());
-                builder.AddContent(7, entry.Value);
+                builder.AddAttribute(6, "value", value.ToString());
+                builder.AddContent(7, GetDisplayName(value));
                 builder.CloseElement();
+
+                if (optionGroup != null && optionGroup.CloseIndex == index)
+                {
+                    builder.CloseElement();
+                }
 
                 index++;
             }
@@ -57,7 +89,8 @@ namespace CsuChhs.Blazor.Components.Forms
             builder.CloseElement(); // close the select element
         }
 
-        protected override bool TryParseValueFromString(string value, out TEnum result, out string validationErrorMessage)
+        protected override bool TryParseValueFromString(string value, out TEnum result,
+            out string validationErrorMessage)
         {
             // Let's Blazor convert the value for us 😊
             if (BindConverter.TryConvertTo(value, CultureInfo.CurrentCulture, out TEnum parsedValue))
@@ -113,26 +146,6 @@ namespace CsuChhs.Blazor.Components.Forms
                 return nullableType;
 
             return typeof(TEnum);
-        }
-
-        /// <summary>
-        /// Converts the Enum into an ordered dictionary
-        /// so that the elements in the input select
-        /// are ordered alphabetically.
-        /// </summary>
-        /// <returns></returns>
-        private Dictionary<string, string> _GetOrderedDict()
-        {
-            var enumType = GetEnumType();
-            Dictionary<string, string> enumDict = new Dictionary<string, string>();
-
-            foreach (TEnum value in Enum.GetValues(enumType))
-            {
-                enumDict.Add(value.ToString(), GetDisplayName(value));
-            }
-
-            return enumDict.OrderBy(s => s.Value)
-                .ToDictionary(x => x.Key, x => x.Value);
-        }
+        } 
     }
 }
