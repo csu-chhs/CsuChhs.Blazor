@@ -1,0 +1,15 @@
+﻿@using Humanizer
+
+@prettyTime
+
+@code {
+    [Parameter]
+    public DateTime DateTime { get; set; }
+
+    private string prettyTime = "";
+
+    protected override void OnParametersSet()
+    {
+        prettyTime = DateTime.Humanize(utcDate: false);
+    }
+}
