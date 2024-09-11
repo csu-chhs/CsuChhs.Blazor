@@ -29,7 +29,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Razor" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.2.0" />
-		<PackageReference Include="TinyMCE.Blazor" Version="1.0.4" />
 		<None Include="../README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 
