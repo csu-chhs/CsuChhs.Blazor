@@ -1,5 +1,5 @@
 window.BlazorControls = {
-    assemblyname: 'CHHS.Common.Blazor',
+    assemblyname: 'CsuChhs.Blazor',
     setFocus: (element) => {
         if (!element)
             return;
