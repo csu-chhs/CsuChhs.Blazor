@@ -1,6 +1,9 @@
 # CsuChhs.Blazor
 
 ## Csu.Chhs.Blazor
+### 1.0.10 (9/11/2024)
+- Removed TinyMCE Component
+
 ### 1.0.9 (8/1/2024)
 - Added an additional component for option grouping with input select enum.  This fixes an issue where the option groups were incorrect based upon some ordering that is applied to the enum
 
