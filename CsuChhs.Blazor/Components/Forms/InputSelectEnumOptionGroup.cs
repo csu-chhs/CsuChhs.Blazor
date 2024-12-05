@@ -5,20 +5,9 @@ using Humanizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace CsuChhs.Blazor.Components.Forms
 {
-    // You may need to install the Microsoft.AspNetCore.Razor.Runtime package into your project
-    [HtmlTargetElement("tag-name")]
-    public class InputSelectEnumOptionGroup : TagHelper
-    {
-        public override void Process(TagHelperContext context, TagHelperOutput output)
-        {
-
-        }
-    }
-
     // Code for this found here: https://www.meziantou.net/creating-a-inputselect-component-for-enumerations-in-blazor.htm
 
     // Inherit from InputBase so the hard work is already implemented 😊
