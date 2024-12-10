@@ -13,7 +13,7 @@ public class InputSelectNullBool : InputBase<bool?>
         builder.AddMultipleAttributes(1, AdditionalAttributes);
         builder.AddAttribute(2, "class", CssClass);
         builder.AddAttribute(3, "value", CurrentValueAsString);
-        builder.AddAttribute(4, "onchange", EventCallback.Factory.CreateBinder<string>(this, value => CurrentValueAsString = value, CurrentValueAsString ?? throw new InvalidOperationException(), null));
+        builder.AddAttribute(4, "onchange", EventCallback.Factory.CreateBinder<string>(this, value => CurrentValueAsString = value, CurrentValueAsString ?? string.Empty, null));
 
         builder.OpenElement(5, "option");
         builder.AddAttribute(6, "value", "");
