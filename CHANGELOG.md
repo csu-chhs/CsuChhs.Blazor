@@ -1,6 +1,9 @@
 # CsuChhs.Blazor
 
 ## Csu.Chhs.Blazor
+### 1.0.13
+- Fix a critical bug in InputSelectBoolNull
+
 ### 1.0.12
 - Added InputSelectBoolNull
   
