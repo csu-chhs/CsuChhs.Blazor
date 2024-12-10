@@ -1,6 +1,9 @@
 # CsuChhs.Blazor
 
 ## Csu.Chhs.Blazor
+### 1.0.12
+- Added InputSelectBoolNull
+  
 ### 1.0.10 (9/11/2024)
 - Removed TinyMCE Component
 
