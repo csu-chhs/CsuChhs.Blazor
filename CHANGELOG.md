@@ -1,6 +1,10 @@
 # CsuChhs.Blazor
 
 ## Csu.Chhs.Blazor
+
+### 1.0.14
+- Added PermissionDenied component which lets users know they do not have access to a resource.
+
 ### 1.0.13
 - Fix a critical bug in InputSelectBoolNull
 
