@@ -1,0 +1,18 @@
+@inject NavigationManager NavigationManager
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Permission Denied/Session Timeout</h4>
+    <p>You either do not have permission to view this page or your session has 
+        expired.  If your session has expired please <a href="#" onclick:preventDefault @onclick="() => ReloadPage()">Reload the Page</a>.  If
+        you believe you should have access to this resource, please contact the CHHS helpdesk.
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public required string Url { get; set; }
+
+    private void ReloadPage()
+    {
+        NavigationManager.NavigateTo($"/{Url}", true);
+    }
+}
