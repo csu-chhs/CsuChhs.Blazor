@@ -1,0 +1,86 @@
+﻿<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog @_modalSize" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ModalTitle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => Close()"></button>
+            </div>
+            <div class="modal-body">
+                @ModalBody
+            </div>
+            <div class="modal-footer">
+                @ModalFooter
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+    private string _modalSize = "";
+
+    public enum SizeOptions
+    {
+        Default = 0,
+        Small = 1,
+        Large = 2,
+        ExtraLarge = 3
+    }
+    
+    [Parameter]
+    public RenderFragment? ModalBody { get; set; }
+    
+    [Parameter]
+    public RenderFragment? ModalTitle { get; set; }
+    
+    [Parameter]
+    public RenderFragment? ModalFooter { get; set; }
+
+    [Parameter] 
+    public SizeOptions Size { get; set; } = SizeOptions.Default;
+
+    protected override Task OnParametersSetAsync()
+    {
+        switch (Size)
+        {
+            case SizeOptions.Small:
+                _modalSize = "modal-sm";
+                break;
+                    
+            case SizeOptions.Large:
+                _modalSize = "modal-lg";
+                break;
+                    
+            case SizeOptions.ExtraLarge:
+                _modalSize = "modal-xl";
+                break;
+        }
+        return base.OnParametersSetAsync();
+    }
+
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+}

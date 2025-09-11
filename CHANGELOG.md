@@ -2,6 +2,9 @@
 
 ## Csu.Chhs.Blazor
 
+### 1.0.16
+- Added Generic Modal component
+
 ### 1.0.14
 - Added PermissionDenied component which lets users know they do not have access to a resource.
 
