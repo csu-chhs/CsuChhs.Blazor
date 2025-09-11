@@ -1,9 +1,15 @@
-﻿<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+﻿@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<div class="modal fade @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog @_modalSize" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">@ModalTitle</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => Close()"></button>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="Close"></button>
             </div>
             <div class="modal-body">
                 @ModalBody
@@ -21,10 +27,7 @@
 }
 
 @code {
-
-
-    public Guid Guid = Guid.NewGuid();
-    public string ModalDisplay = "none;";
+    public string ModalDisplay = "none";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
     private string _modalSize = "";
@@ -36,42 +39,30 @@
         Large = 2,
         ExtraLarge = 3
     }
-    
-    [Parameter]
-    public RenderFragment? ModalBody { get; set; }
-    
-    [Parameter]
-    public RenderFragment? ModalTitle { get; set; }
-    
-    [Parameter]
-    public RenderFragment? ModalFooter { get; set; }
 
-    [Parameter] 
-    public SizeOptions Size { get; set; } = SizeOptions.Default;
+    [Parameter] public SizeOptions? Size { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public RenderFragment? ModalTitle { get; set; }
+    public RenderFragment? ModalBody { get; set; }
+    public RenderFragment? ModalFooter { get; set; }
 
     protected override Task OnParametersSetAsync()
     {
-        switch (Size)
+        _modalSize = Size switch
         {
-            case SizeOptions.Small:
-                _modalSize = "modal-sm";
-                break;
-                    
-            case SizeOptions.Large:
-                _modalSize = "modal-lg";
-                break;
-                    
-            case SizeOptions.ExtraLarge:
-                _modalSize = "modal-xl";
-                break;
-        }
+            SizeOptions.Small => "modal-sm",
+            SizeOptions.Large => "modal-lg",
+            SizeOptions.ExtraLarge => "modal-xl",
+            _ => ""
+        };
         return base.OnParametersSetAsync();
     }
 
     public void Open()
     {
-        ModalDisplay = "block;";
-        ModalClass = "Show";
+        ModalDisplay = "block";
+        ModalClass = "show";
         ShowBackdrop = true;
         StateHasChanged();
     }
@@ -83,4 +74,9 @@
         ShowBackdrop = false;
         StateHasChanged();
     }
+    
+    public void SetTitle(RenderFragment? content) => ModalTitle = content;
+    public void SetBody(RenderFragment? content) => ModalBody = content;
+    public void SetFooter(RenderFragment? content) => ModalFooter = content;
+
 }
