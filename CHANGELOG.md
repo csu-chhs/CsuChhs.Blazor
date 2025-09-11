@@ -2,6 +2,9 @@
 
 ## Csu.Chhs.Blazor
 
+### 1.0.17
+- Updated Modal
+
 ### 1.0.16
 - Added Generic Modal component
 
