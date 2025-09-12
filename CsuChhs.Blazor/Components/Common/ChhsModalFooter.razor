@@ -1,4 +1,9 @@
-﻿@code {
+﻿<CascadingValue Value="EditContext">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [CascadingParameter] EditContext? EditContext { get; set; }
     [CascadingParameter] public ChhsModal? Parent { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 

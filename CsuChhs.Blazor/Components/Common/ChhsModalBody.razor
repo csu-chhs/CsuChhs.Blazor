@@ -1,5 +1,10 @@
-﻿@code {
+﻿<CascadingValue Value="EditContext">
+    @ChildContent
+</CascadingValue>
+
+@code {
     [CascadingParameter] public ChhsModal? Parent { get; set; }
+    [CascadingParameter] EditContext? EditContext { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     protected override void OnInitialized()
