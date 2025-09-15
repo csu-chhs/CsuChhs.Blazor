@@ -2,6 +2,9 @@
 
 ## Csu.Chhs.Blazor
 
+### 1.0.19
+- Removed modal completely.
+
 ### 1.0.18
 - Updated Modal
 
