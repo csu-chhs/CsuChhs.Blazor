@@ -8,7 +8,7 @@ Software: CsuChhs.Blazor
 
 License: Apache 2.0
 
-Licensor: College of Health and Human Sciences, Colorado State Univeristy  
+Licensor: College of Health and Human Sciences, Colorado State University  
   
   
   
