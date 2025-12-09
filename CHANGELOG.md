@@ -2,6 +2,9 @@
 
 ## Csu.Chhs.Blazor
 
+### 1.0.21
+- Add PageProblemDetails to manage page errors from Problem details responses.
+
 ### 1.0.19
 - Removed modal completely.
 
