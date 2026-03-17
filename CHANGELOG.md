@@ -2,6 +2,9 @@
 
 ## Csu.Chhs.Blazor
 
+### 1.0.22
+- Remove CKEditor. Use Radzen instead.
+
 ### 1.0.21
 - Add PageProblemDetails to manage page errors from Problem details responses.
 
