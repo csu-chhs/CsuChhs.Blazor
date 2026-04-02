@@ -23,7 +23,6 @@
 
 	<ItemGroup>
         <PackageReference Include="BlazorComponentUtilities" Version="1.8.0"/>
-        <PackageReference Include="CsuChhs.Extensions" Version="1.5.7" />
 		<PackageReference Include="CsuChhs.WebComponents" Version="1.0.7" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.20" />

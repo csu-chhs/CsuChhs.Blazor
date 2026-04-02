@@ -4,7 +4,7 @@ namespace CsuChhs.Blazor.Components.Forms
 {
     public class InputSelectNumber<T> : InputSelect<T>
     {
-        protected override bool TryParseValueFromString(string value, out T result, out string validationErrorMessage)
+        protected override bool TryParseValueFromString(string? value, out T result, out string validationErrorMessage)
         {
             if (typeof(T) == typeof(int))
             {

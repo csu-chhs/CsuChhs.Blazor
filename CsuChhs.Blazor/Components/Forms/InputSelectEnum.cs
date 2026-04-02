@@ -46,7 +46,7 @@ namespace CsuChhs.Blazor.Components.Forms
             builder.CloseElement(); // close the select element
         }
 
-        protected override bool TryParseValueFromString(string value, out TEnum result, out string validationErrorMessage)
+        protected override bool TryParseValueFromString(string? value, out TEnum result, out string validationErrorMessage)
         {
             // Let's Blazor convert the value for us 😊
             if (BindConverter.TryConvertTo(value, CultureInfo.CurrentCulture, out TEnum parsedValue))
