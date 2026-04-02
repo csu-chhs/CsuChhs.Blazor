@@ -23,8 +23,8 @@
 
 	<ItemGroup>
         <PackageReference Include="BlazorComponentUtilities" Version="1.8.0"/>
+        <PackageReference Include="CsuChhs.Extensions" Version="1.5.7" />
 		<PackageReference Include="CsuChhs.WebComponents" Version="1.0.7" />
-		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.20" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.20" />

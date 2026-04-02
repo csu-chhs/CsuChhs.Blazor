@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
-using Humanizer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -122,7 +121,7 @@ namespace CsuChhs.Blazor.Components.Forms
 
             // Require the NuGet package Humanizer.Core
             // <PackageReference Include = "Humanizer.Core" Version = "2.8.26" />
-            return value.ToString().Humanize();
+            return value.ToString();
         }
 
         // Get the actual enum type. It unwrap Nullable<T> if needed

@@ -1,4 +1,5 @@
-﻿@using Humanizer
+﻿@using CsuChhs.Extensions
+
 
 @prettyTime
 
@@ -10,6 +11,6 @@
 
     protected override void OnParametersSet()
     {
-        prettyTime = DateTime.Humanize(utcDate: false);
+        prettyTime = DateTime.ToPrettyTime();
     }
 }
