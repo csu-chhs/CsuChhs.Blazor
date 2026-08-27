@@ -1,6 +1,6 @@
 ﻿@inject NavigationManager BlazorNavigationManager
 
-<img src="@imgLink" height="@Height" width="@Width" class="@ClassName"/>
+<img src="@imgLink" height="@Height" width="@Width" class="@ClassName" alt="@Alt"/>
 
 @code {
 
@@ -18,6 +18,8 @@
 
     [Parameter]
     public string ImageServicePath { get; set; }
+
+    [Parameter] public string Alt { get; set; } = string.Empty;
 
     string imgLink = "";
 
