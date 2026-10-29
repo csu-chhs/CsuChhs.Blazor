@@ -14,6 +14,9 @@ namespace CsuChhs.Blazor.Components.Forms
     // Note that adding a constraint on TEnum (where T : Enum) doesn't work when used in the view, Razor raises an error at build time. Also, this would prevent using nullable types...
     public sealed class InputSelectEnum<TEnum> : InputBase<TEnum>
     {
+        [Parameter]
+        public Func<IEnumerable<TEnum>, IEnumerable<TEnum>>? ValueOrder { get; set; }
+
         // Generate html when the component is rendered.
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
@@ -105,23 +108,30 @@ namespace CsuChhs.Blazor.Components.Forms
         }
 
         /// <summary>
-        /// Converts the Enum into an ordered dictionary
-        /// so that the elements in the input select
-        /// are ordered alphabetically.
+        /// Converts the enum values to display entries.
+        /// Uses alphabetical display ordering by default,
+        /// or preserves developer-provided ordering when supplied.
         /// </summary>
         /// <returns></returns>
-        private Dictionary<string, string> _GetOrderedDict()
+        private IEnumerable<KeyValuePair<string, string>> _GetOrderedDict()
         {
             var enumType = GetEnumType();
-            Dictionary<string, string> enumDict = new Dictionary<string, string>();
+            var entries = new List<KeyValuePair<string, string>>();
 
-            foreach (TEnum value in Enum.GetValues(enumType))
+            IEnumerable<TEnum> values = Enum.GetValues(enumType).Cast<TEnum>();
+            if (ValueOrder != null)
             {
-                enumDict.Add(value.ToString(), GetDisplayName(value));
+                values = ValueOrder(values);
             }
 
-            return enumDict.OrderBy(s => s.Value)
-                .ToDictionary(x => x.Key, x => x.Value);
+            foreach (TEnum value in values)
+            {
+                entries.Add(new KeyValuePair<string, string>(value.ToString(), GetDisplayName(value)));
+            }
+
+            return ValueOrder == null
+                ? entries.OrderBy(s => s.Value)
+                : entries;
         }
     }
 }
