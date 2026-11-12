@@ -1,0 +1,8 @@
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnParametersSet() 
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+}
